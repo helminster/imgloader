@@ -83,7 +83,7 @@ class Worker
 
     /**
      * Starts downloader in daemon mode, awaiting for future tasks
-     * @todo Locks
+     * @todo Locks and signal processing
      *
      * @param EventLoop\LoopInterface $loop A loop, worker is run on
      */

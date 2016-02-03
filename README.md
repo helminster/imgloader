@@ -4,10 +4,10 @@ Duplicates are rewritten.
 ## Usage examples
 
 ### Scheduler
-./bot.php schedule images.txt
+./bot schedule images.txt
 
 ### Downloader in non-daemon mode
-./bot.php download
+./bot download
 
 ### Downloader in daemon mode
-./bot.php daemon
+./bot daemon
