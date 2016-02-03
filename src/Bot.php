@@ -5,6 +5,11 @@ use Scheduler\Parser;
 use Downloader\Worker;
 use React\EventLoop;
 
+/**
+ * Bot is main class, starting appropriate tasks dependant on args
+ *
+ * @author Sergey Kutikin <s.kutikin@gmail.com>
+ */
 class Bot
 {
     /**
@@ -103,17 +108,20 @@ class Bot
         }
     }
 
+    /**
+     * Downloads URLs scheduled by scheduler, can run in daemon mode
+     *
+     * @param bool $isDaemon Daemon mode on/off
+     */
     private function download($isDaemon = false)
     {
+        $loop = EventLoop\Factory::create();
+        $worker = new Worker($this->queueClient);
+
         if (!$isDaemon) {
-            $loop = EventLoop\Factory::create();
-            $worker = new Worker($this->queueClient);
-
-            $loop->addPeriodicTimer(0.1, function ($timer) use ($worker) {
-                $worker->run($timer);
-            });
-
-            $loop->run();
+            $worker->run($loop);
+        } else {
+            $worker->runDaemon($loop);
         }
     }
 

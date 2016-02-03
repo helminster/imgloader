@@ -2,6 +2,12 @@
 
 namespace Queue;
 
+/**
+ * AMQPClosure for post processing and informing AMQP broker of result of this processing
+ *
+ * @author Sergey Kutikin <s.kutikin@gmail.com>
+ * @package Queue
+ */
 class AMQPClosure
 {
     /**

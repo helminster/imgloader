@@ -6,11 +6,8 @@
         { "type": "composer", "url": "http://packagist.org" }
     ],
     "require": {
-        "react/react": "0.4.2",
-        "php": ">=5.4.0"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "~3.7.0"
+        "react/react": "0.4.*",
+        "php": ">=5.6.0"
     },
 
     "autoload": {

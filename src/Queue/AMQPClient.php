@@ -77,7 +77,7 @@ class AMQPClient
         } catch (\AMQPException $e) {
             throw new AmqpConnectionException(
                 sprintf(
-                    'Amqp connection error (%s:%s): %s',
+                    'AMQP connection error (%s:%s): %s',
                     $this->connection->getHost(),
                     $this->connection->getPort(),
                     $e->getMessage()
@@ -107,24 +107,19 @@ class AMQPClient
      * @param string $name Exchange name
      * @param string $type Exchange type, see AMQP_EX_TYPE_*
      * @param bool $durable Is exchange durable
-     * @param string|null $alternateExchange Name of alternate exchange if required
      *
      * @return bool Success flag
      *
      * @throws AmqpConnectionException
      * @throws \AMQPException
      */
-    public function declareExchange($name, $type = AMQP_EX_TYPE_DIRECT, $durable = true, $alternateExchange = null)
+    public function declareExchange($name, $type = AMQP_EX_TYPE_DIRECT, $durable = true)
     {
         try {
             $exchange = new \AMQPExchange($this->getChannel());
             $exchange->setName($name);
             $exchange->setType($type);
             $exchange->setFlags($durable ? AMQP_DURABLE : AMQP_NOPARAM);
-
-            if ($alternateExchange !== null) {
-                $exchange->setArgument('alternate-exchange', (string) $alternateExchange);
-            }
 
             return $exchange->declareExchange();
 
