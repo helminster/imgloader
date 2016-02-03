@@ -1,4 +1,4 @@
-# A simple bot for scheduling and downloading images using RabbitMQ and ReactPHP
+A simple bot for scheduling and downloading images using RabbitMQ and ReactPHP
 
 ## Usage examples
 
