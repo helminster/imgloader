@@ -57,8 +57,7 @@ class Parser
         while ($url = trim(fgets($this->filed))) {
             $failed = false;
 
-            if (!filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED | FILTER_FLAG_HOST_REQUIRED) ||
-                !in_array(parse_url($url, PHP_URL_SCHEME), self::ALLOWED_SCHEMES)) {
+            if (!$this->isURLValid($url) || !$this->isSchemeValid($url)) {
                 $failed = true;
             }
 
@@ -69,5 +68,27 @@ class Parser
         }
 
         return $result;
+    }
+
+    /**
+     * Validates URL by PHP embedded means
+     *
+     * @param string $url An URL to test
+     * @return bool Result of check
+     */
+    private function isURLValid($url)
+    {
+        return !!filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED | FILTER_FLAG_HOST_REQUIRED);
+    }
+
+    /**
+     * Checks if scheme of URL is in allowed list
+     *
+     * @param string $url An URL to check
+     * @return bool Result of check
+     */
+    private function isSchemeValid($url)
+    {
+        return in_array(parse_url($url, PHP_URL_SCHEME), self::ALLOWED_SCHEMES);
     }
 }

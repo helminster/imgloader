@@ -17,14 +17,32 @@ class Bot
      */
     const CONFIG_DELIMITER = '/';
 
+    /**
+     * Task type, schedules URLs from input file for download
+     */
     const BOT_TYPE_SCHEDULE = 1;
+    /**
+     * Task type, downloads all current URLs from schedule and exits
+     */
     const BOT_TYPE_DOWNLOAD = 2;
+    /**
+     * Task type, downloads URLs as they arrive to schedule, daemon mode
+     */
     const BOT_TYPE_DOWNLOAD_DAEMON = 3;
 
     const EXCHANGE_NAME = 'image_download';
     const QUEUE_NAME_SCHEDULER = 'download';
     const QUEUE_NAME_DOWNLOADED = 'done';
     const QUEUE_NAME_FAILED = 'failed';
+
+    /**
+     * @var array A dictionary connecting commands to BOT_TYPE_* types
+     */
+    public static $typeDictionary = [
+        'schedule' => Bot::BOT_TYPE_SCHEDULE,
+        'download' => Bot::BOT_TYPE_DOWNLOAD,
+        'daemon' => Bot::BOT_TYPE_DOWNLOAD_DAEMON
+    ];
 
     /**
      * @var AMQPClient An interface for communication with RabbitMQ
@@ -36,7 +54,13 @@ class Bot
      */
     private $type = null;
 
-    public function __construct ($type = self::BOT_TYPE_SCHEDULE, $file = 'images.txt')
+    /**
+     * Basic Bot constructor, initializes bot and starts appropriate task.
+     *
+     * @param int $type Type of task to perform, see BOT_TYPE_*
+     * @param string $file Path to input file for schedule task
+     */
+    public function __construct($type = self::BOT_TYPE_SCHEDULE, $file = 'images.txt')
     {
         $this->queueClient = new AMQPClient(self::config('queue'));
         $this->initAMQPBroker();
@@ -64,7 +88,7 @@ class Bot
      * @param string|null $path
      * @return mixed|null
      */
-    public static function config ($path = null)
+    public static function config($path = null)
     {
         static $config = null;
 
@@ -97,6 +121,7 @@ class Bot
      * @param string $filename Path to file with image URLs
      *
      * @throws AMQPException
+     * @throws \InvalidArgumentException
      */
     private function schedule($filename)
     {
@@ -129,7 +154,7 @@ class Bot
      * Declares and binds exchange and all needed queues.
      *
      * @throws AMQPException
-     * @throws \Queue\AmqpConnectionException
+     * @throws \Queue\Exception\ConnectionException
      */
     private function initAMQPBroker()
     {

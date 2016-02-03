@@ -2,6 +2,8 @@
 
 namespace Queue;
 
+use Queue\Exception\ConnectionException;
+
 /**
  * AMQPClient class is middleware for interactions with AMQP broker
  *
@@ -55,7 +57,7 @@ class AMQPClient
      *
      * @return \AMQPChannel
      *
-     * @throws AmqpConnectionException
+     * @throws ConnectionException
      */
     private function getChannel()
     {
@@ -75,7 +77,7 @@ class AMQPClient
             $channel = new \AMQPChannel($this->connection);
             $channel->setPrefetchCount(self::DEFAULT_PREFETCH_COUNT);
         } catch (\AMQPException $e) {
-            throw new AmqpConnectionException(
+            throw new ConnectionException(
                 sprintf(
                     'AMQP connection error (%s:%s): %s',
                     $this->connection->getHost(),
@@ -110,7 +112,7 @@ class AMQPClient
      *
      * @return bool Success flag
      *
-     * @throws AmqpConnectionException
+     * @throws ConnectionException
      * @throws \AMQPException
      */
     public function declareExchange($name, $type = AMQP_EX_TYPE_DIRECT, $durable = true)
@@ -125,7 +127,7 @@ class AMQPClient
 
         } catch (\AMQPConnectionException $e) {
             $this->channel = null;
-            throw new AmqpConnectionException($e->getMessage(), $e->getCode(), $e);
+            throw new ConnectionException($e->getMessage(), $e->getCode(), $e);
         } catch (\AMQPException $e) {
             $this->channel = null;
             throw $e;
@@ -141,7 +143,7 @@ class AMQPClient
      *
      * @return string New queue name
      *
-     * @throws AmqpConnectionException
+     * @throws ConnectionException
      * @throws \AMQPException
      */
     public function declareQueue($name, $durable = true, $exclusive = false)
@@ -163,7 +165,7 @@ class AMQPClient
             return $queue->getName();
         } catch (\AMQPConnectionException $e) {
             $this->channel = null;
-            throw new AmqpConnectionException($e->getMessage(), $e->getCode(), $e);
+            throw new ConnectionException($e->getMessage(), $e->getCode(), $e);
         } catch (\AMQPException $e) {
             $this->channel = null;
             throw $e;
