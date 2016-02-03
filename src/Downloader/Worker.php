@@ -40,6 +40,11 @@ class Worker
      */
     private $files = [];
 
+    /**
+     * Basic Worker constructor.
+     *
+     * @param AMQPClient $queueClient A client to AMQP broker
+     */
     public function __construct(AMQPClient $queueClient)
     {
         $this->queueClient = $queueClient;

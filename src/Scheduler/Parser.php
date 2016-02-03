@@ -10,6 +10,9 @@ namespace Scheduler;
  */
 class Parser
 {
+    /**
+     * A list of schemes allowed for downloading
+     */
     const ALLOWED_SCHEMES = [
         'http',
         'https'

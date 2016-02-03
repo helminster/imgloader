@@ -5,6 +5,7 @@ require __DIR__ . '/src/bootstrap.php';
 
 $displayHelp = false;
 
+// bot needs at least 1 argument
 if ($argc < 2) {
     $displayHelp = true;
 }

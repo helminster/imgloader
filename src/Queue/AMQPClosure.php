@@ -30,6 +30,13 @@ class AMQPClosure
      */
     private $message;
 
+    /**
+     * Basic AMQPClosure constructor.
+     *
+     * @param string $message A payload from message of this closure
+     * @param \AMQPEnvelope $envelope Envelope object of closure
+     * @param \AMQPQueue $queue Queue object of closure
+     */
     public function __construct($message, \AMQPEnvelope $envelope, \AMQPQueue $queue)
     {
         $this->envelope = $envelope;

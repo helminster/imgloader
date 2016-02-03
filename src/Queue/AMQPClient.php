@@ -267,7 +267,6 @@ class AMQPClient
      */
     public function bind($exchangeName, array $queueNames)
     {
-
         try {
             foreach ($queueNames as $queueName) {
                 $queue = new \AMQPQueue($this->getChannel());
